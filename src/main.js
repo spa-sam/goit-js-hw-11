@@ -57,7 +57,18 @@ function createGalleryElement(parentElement) {
   parentElement.appendChild(gallery);
   return gallery;
 }
+
 const container = document.querySelector('.container');
+const toastOptions = {
+  title: '',
+  message:
+    'Sorry, there are no images matching<br> your search query. Please try again!',
+  position: 'topRight',
+  backgroundColor: '#EF4040',
+  messageColor: '#FAFAFB',
+  theme: 'dark',
+  messageSize: '322px',
+};
 
 document.querySelector('form').addEventListener('submit', function (event) {
   event.preventDefault();
@@ -92,15 +103,3 @@ document.querySelector('form').addEventListener('submit', function (event) {
       });
     });
 });
-
-const searchInput = document.querySelector('.search-input');
-const toastOptions = {
-  title: '',
-  message:
-    'Sorry, there are no images matching<br> your search query. Please try again!',
-  position: 'topRight',
-  backgroundColor: '#EF4040',
-  messageColor: '#FAFAFB',
-  theme: 'dark',
-  messageSize: '322px',
-};

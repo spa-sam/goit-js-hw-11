@@ -16,19 +16,12 @@ const BASE_URL = `${BASE}?key=${API_KEY}&image_type=${IMAGE_TYPE}&orientation=${
 
 function createInfoBlock(title, value) {
   return `
-    <div style="display: flex;
-                flex-direction: column;
-                align-items: center;">
+    <div class="info-block">
       <p>${title}</p>
       <p>${value}</p>
     </div>
   `;
 }
-
-const linkElement = document.querySelector('.linkStyle');
-const cardElement = document.querySelector('.cardStyle');
-const imgElement = document.querySelector('.imgStyle');
-const infoElement = document.querySelector('.infoStyle');
 
 function createImageCardMarkup({
   largeImageURL,
@@ -48,9 +41,11 @@ function createImageCardMarkup({
           ${createInfoBlock('Views', views)}
           ${createInfoBlock('Comments', comments)}
           ${createInfoBlock('Downloads', downloads)}
+        </div>
+      </div>
+    </a>
   `;
 }
-
 const lightbox = new SimpleLightbox('.lightbox-image', {
   captionsData: 'alt',
   captionDelay: 250,
@@ -63,11 +58,11 @@ function createGalleryElement(parentElement) {
   return gallery;
 }
 const container = document.querySelector('.container');
-const createGallery = createGalleryElement(container);
 
 document.querySelector('form').addEventListener('submit', function (event) {
   event.preventDefault();
-  const gallery = document.querySelector('.gallery') || createGalleryElement();
+  const gallery =
+    document.querySelector('.gallery') || createGalleryElement(container);
   gallery.innerHTML = '';
   const loader = document.querySelector('.loader');
   loader.style.display = 'block';
@@ -81,10 +76,10 @@ document.querySelector('form').addEventListener('submit', function (event) {
       } else {
         data.hits.forEach(image => {
           const markup = createImageCardMarkup(image);
-          gallery.innerHTML += markup;
+          gallery.insertAdjacentHTML('beforeend', markup);
         });
       }
-      searchInput.value = '';
+      document.querySelector('form').reset();
       lightbox.refresh();
       loader.style.display = 'none';
     })

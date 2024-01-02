@@ -6,13 +6,16 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const BASE = 'https://pixabay.com/api/';
-const API_KEY = '41493530-c71176b83a18405cd33ba2537';
-const IMAGE_TYPE = 'photo';
-const ORIENTATION = 'horizontal';
-const SAFESEARCH = 'true';
+const options = {
+  base: 'https://pixabay.com/api/',
+  key: '41493530-c71176b83a18405cd33ba2537',
+  image_type: 'photo',
+  orientation: 'horizontal',
+  safesearch: 'true',
+};
 
-const BASE_URL = `${BASE}?key=${API_KEY}&image_type=${IMAGE_TYPE}&orientation=${ORIENTATION}&safesearch=${SAFESEARCH}&q=`;
+const params = new URLSearchParams(options);
+const BASE_URL = `${options.base}?${params}`;
 
 function createInfoBlock(title, value) {
   return `
@@ -77,9 +80,10 @@ document.querySelector('form').addEventListener('submit', function (event) {
   gallery.innerHTML = '';
   const loader = document.querySelector('.loader');
   loader.style.display = 'block';
-  const searchQuery = document.querySelector('input[type="text"]').value;
+  const searchQuery = document.querySelector('input').value;
+  params.set('q', searchQuery);
 
-  fetch(`${BASE_URL}${encodeURIComponent(searchQuery)}`)
+  fetch(`${BASE_URL}?${params.toString()}`)
     .then(response => response.json())
     .then(data => {
       if (data.hits.length === 0) {
